@@ -1,0 +1,498 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Preflight Universal (Docs + Images + Labs)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root {
+      --bg:#0b0d10;
+      --panel:#12161c;
+      --text:#e7eef7;
+      --muted:#9fb0c2;
+      --ok:#29d17d;
+      --warn:#ffb020;
+      --bad:#ff5c5c;
+      --border:#1f2734;
+    }
+    * { box-sizing:border-box; }
+    body {
+      margin:0;
+      background:linear-gradient(180deg,#0b0d10,#0e1319);
+      font-family:system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+      color:var(--text);
+    }
+    .wrap {
+      max-width:1100px;
+      margin:32px auto;
+      padding:20px;
+    }
+    .card {
+      background:var(--panel);
+      border:1px solid #1e2430;
+      border-radius:16px;
+      padding:20px;
+      box-shadow:0 10px 30px rgba(0,0,0,.25);
+    }
+    h1 {
+      margin:0 0 10px;
+      font-weight:700;
+      font-size:24px;
+    }
+    pre {
+        font-size: 6px; 
+        white-space: pre;
+        margin-left: -25px;
+      }
+      .medical-big-inline{
+        margin-top: 0.75rem;
+        text-align: center;
+        font-size: 15px;   
+        letter-spacing: 0.4em;
+        font-weight: bold;
+      }
+    p {
+      color:var(--muted);
+      margin:8px 0 14px;
+    }
+    .row {
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+    }
+    .drop {
+      flex:1;
+      border:2px dashed #2a3343;
+      border-radius:14px;
+      padding:24px;
+      text-align:center;
+      cursor:pointer;
+      background:#0f141b;
+      min-width:280px;
+    }
+    .drop:hover { border-color:#3b4860; }
+    .pill {
+      display:inline-block;
+      padding:2px 8px;
+      border-radius:999px;
+      font-size:12px;
+      margin-right:6px;
+      border:1px solid #263246;
+      color:#a7bdd7;
+    }
+    
+    /* --- MODIFIED RESULT STYLES --- */
+    .result {
+      margin-top:14px;
+      padding:14px;
+      border-radius:12px;
+      background:#0f141b;
+      border:1px solid #1f2732;
+      position: relative; /* Required for the close button positioning */
+    }
+    
+    /* New Close Button Style */
+    .close-card-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      width: 24px;
+      height: 24px;
+      background: transparent;
+      color: var(--muted);
+      border: 1px solid var(--border);
+      border-radius: 50%;
+      text-align: center;
+      line-height: 22px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: all 0.2s;
+      z-index: 10;
+    }
+    .close-card-btn:hover {
+      background: var(--bad);
+      color: white;
+      border-color: var(--bad);
+    }
+
+    /* Hide the Upload Button inside results */
+    .result .btn {
+      display: none !important; 
+    }
+    /* ------------------------------ */
+
+    .score { font-weight:700; }
+    .good { color:var(--ok); }
+    .warn { color:var(--warn); }
+    .bad { color:var(--bad); }
+    .tips {
+      margin-top:8px;
+      color:#bcd0e6;
+      font-size:13px;
+    }
+    .btn {
+      background:#17202b;
+      border:1px solid #2a3343;
+      border-radius:10px;
+      color:#d7e6fb;
+      padding:10px 14px;
+      cursor:pointer;
+      font-size:13px;
+    }
+    .btn[disabled] {
+      opacity:.5;
+      cursor:not-allowed;
+    }
+    .btn:hover:not([disabled]) {
+      border-color:#3b4860;
+    }
+    .config {
+      margin-top:12px;
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:12px;
+    }
+    @media (max-width:1100px) {
+      .config { grid-template-columns:1fr; }
+    }
+    .k {
+      font-weight:600;
+      color:#cfe0f7;
+      font-size:13px;
+      margin-bottom:4px;
+    }
+    input[type="text"], input[type="url"] {
+      width:100%;
+      padding:6px 8px;
+      border-radius:8px;
+      border:1px solid #222b3a;
+      background:#0c1117;
+      color:#e2ecff;
+      font-size:13px;
+    }
+    .panel {
+      background:#0f141b;
+      border:1px solid #1f2732;
+      border-radius:12px;
+      padding:12px;
+    }
+    .mono {
+      font-family:ui-monospace,Menlo,Consolas,monospace;
+      white-space:pre-wrap;
+      word-break:break-word;
+      font-size:12px;
+      color:#cfe0f7;
+    }
+    .progress {
+      font-size:13px;
+      color:#9fb0c2;
+      margin-top:6px;
+    }
+    .grid {
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:12px;
+      margin-top:12px;
+    }
+    @media (max-width:1100px) {
+      .grid { grid-template-columns:1fr; }
+    }
+
+    /* ===== About / Explanation Section ===== */
+    .preflight-about {
+      max-width:1100px;
+      margin:24px auto 40px;
+      padding:0 20px 10px;
+      font-family:inherit;
+    }
+    .preflight-about .pf-card {
+      background:var(--panel, #10151d);
+      border-radius:16px;
+      border:1px solid var(--border);
+      padding:20px 20px 24px;
+      box-shadow:0 10px 30px rgba(0,0,0,.3);
+    }
+    .preflight-about h2 {
+      margin:0 0 10px;
+      font-size:22px;
+      font-weight:700;
+      color:var(--text);
+    }
+    .preflight-about h3 {
+      margin:0 0 8px;
+      font-size:16px;
+      font-weight:600;
+      color:#d2e0f5;
+    }
+    .preflight-about p {
+      margin:6px 0 10px;
+      font-size:14px;
+      color:var(--muted);
+    }
+    .preflight-about ul,
+    .preflight-about ol {
+      margin:6px 0 10px 18px;
+      padding:0;
+      font-size:13px;
+      color:#b5c4d7;
+    }
+    .preflight-about li { margin-bottom:4px; }
+    .preflight-about code {
+      background:#0c1117;
+      border-radius:6px;
+      padding:1px 5px;
+      font-size:12px;
+      border:1px solid #202838;
+      color:#e3ecff;
+    }
+    .preflight-about strong { color:#dde8ff; }
+    .preflight-about em {
+      color:#ffdf91;
+      font-style:normal;
+    }
+    .preflight-about .pf-grid {
+      margin-top:14px;
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:12px;
+    }
+    .preflight-about .pf-panel {
+      background:#0f141b;
+      border-radius:12px;
+      border:1px solid #1d2532;
+      padding:10px 12px 12px;
+    }
+    @media (max-width:900px) {
+      .preflight-about .pf-grid { grid-template-columns:1fr; }
+    }
+  </style>
+
+  <script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js"></script>
+  <script>
+    pdfjsLib.GlobalWorkerOptions.workerSrc =
+      "https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js";
+  </script>
+
+  <script>
+    (function loadXLSX(){
+      const sources = [
+        "./vendor/xlsx.full.min.js",
+        "https://fastly.jsdelivr.net/npm/xlsx@0.20.2/dist/xlsx.full.min.js",
+        "https://cdn.statically.io/gh/SheetJS/sheetjs/v0.20.2/dist/xlsx.full.min.js",
+        "https://cdn.sheetjs.com/xlsx-0.20.2/package/dist/xlsx.full.min.js"
+      ];
+      let i = 0;
+      function next(){
+        if (window.XLSX && typeof XLSX.read === "function") {
+          return;
+        }
+        if (i >= sources.length) {
+          window.__xlsxFailed = true;
+          return;
+        }
+        const s = document.createElement("script");
+        s.src = sources[i++];
+        s.async = true;
+        s.onerror = () => { next(); };
+        document.head.appendChild(s);
+      }
+      next();
+    })();
+  </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/mammoth@1.8.0/mammoth.browser.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5.1.1/dist/tesseract.min.js"></script>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card">
+      <pre>
+        ######    ######    #######   #######   ##        #####      ######   ##   ##   ####### 
+        ##   ##   ##   ##   ##        ##        ##          ##      ##        ##   ##     ##    
+        ##   ##   ##   ##   ##        ##        ##          ##      ##        ##   ##     ##    
+        ######    ######    #####     #####     ##          ##      ##  ###   #######     ##    
+        ##        ##  ##    ##        ##        ##          ##      ##   ##   ##   ##     ##    
+        ##        ##   ##   ##        ##        ##          ##      ##   ##   ##   ##     ##        
+        ##        ##    ##  #######   ##        #######   #####      ######   ##   ##     ##
+        <span class="medical-big-inline">Universal</span> 
+        <span class="medical-big-inline">Designed & Developed</span>   
+        <span class="medical-big-inline">By Debayan Chakravarty</span>                            
+      </pre>
+      <p>
+        Check the quality of documents, images, medical scans, and lab reports
+        <strong>before</strong> they hit OCR / AI and storage.
+      </p>
+
+      <div class="config">
+        <div class="panel">
+          <div class="k">Active plugins</div>
+          <div class="mono">
+            xray-plus · med-imaging · labs · doc-ocr
+          </div>
+        </div>
+      </div>
+
+      <div class="row" style="margin-top:14px">
+        <div id="drop" class="drop">
+          <input id="file" type="file" multiple style="display:none" />
+          <p>👉 <b>Click to choose files</b> or drag &amp; drop here</p>
+          <div class="pill">PDF</div>
+          <div class="pill">JPG/PNG</div>
+          <div class="pill">CSV</div>
+          <div class="pill">XLSX</div>
+          <div class="pill">DOCX</div>
+          <div class="pill">DICOM (.dcm)</div>
+        </div>
+      </div>
+
+      <div id="files"></div>
+    </div>
+  </div>
+
+  <section class="preflight-about">
+    <div class="pf-card">
+      <h2>Why Preflight Exists</h2>
+      <p>
+        Preflight is the gatekeeper between <strong>raw uploads</strong> and your
+        <strong>OCR / AI engine</strong>. Its goal is simple:
+        <em>no garbage in, so there is no garbage out</em>.
+      </p>
+
+      <div class="pf-grid">
+        <div class="pf-panel">
+          <h3>What Problem Are We Solving?</h3>
+          <ul>
+            <li>Users upload blurry scans, cropped pages, low–DPI PDFs, or broken CSV/XLSX files.</li>
+            <li>OCR and AI models struggle to read them and produce unreliable results.</li>
+            <li>Bad input causes wasted compute and frustrated users who blame the system.</li>
+          </ul>
+          <p>
+            Preflight catches these issues <strong>before</strong> the files reach storage and
+            processing, and explains to the user how to fix them.
+          </p>
+        </div>
+
+        <div class="pf-panel">
+          <h3>How Preflight Works</h3>
+          <ol>
+            <li><strong>Detects file type</strong> (PDF, image, CSV, XLSX, DOCX, DICOM, etc.).</li>
+            <li>
+              Routes the file to a specialized plugin:
+              <ul>
+                <li><code>doc-ocr</code> – documents, PDFs, generic images.</li>
+                <li><code>xray-plus</code> – X-ray style radiographs.</li>
+                <li><code>med-imaging</code> – CT/MR/US exports &amp; DICOM stub.</li>
+                <li><code>labs</code> – lab reports (PDF/image/CSV/XLSX/HL7/FHIR).</li>
+              </ul>
+            </li>
+            <li>
+              Each plugin runs fast checks on:
+              <strong>resolution</strong>, <strong>sharpness</strong>, <strong>contrast</strong>,
+              <strong>structure</strong>, and, where useful, a light
+              <strong>OCR (English) probe</strong>.
+            </li>
+            <li>
+              Preflight computes a <strong>quality score out of 100</strong> and shows a verdict:
+              Good, Borderline, or Poor.
+            </li>
+            <li>
+              If the file is acceptable, the user can proceed to upload; otherwise, they get clear,
+              human-readable guidance on how to improve the file.
+            </li>
+          </ol>
+        </div>
+
+        <div class="pf-panel">
+          <h3>How This Improves Accuracy</h3>
+          <ul>
+            <li>
+              <strong>Better scans for OCR</strong> – checks resolution, blur, and contrast so the
+              text layer is readable.
+            </li>
+            <li>
+              <strong>Cleaner tables for analytics</strong> – CSV/XLSX checks catch inconsistent
+              columns and empty cells before they break parsers.
+            </li>
+            <li>
+              <strong>Higher-quality medical images</strong> – X-ray / CT / MR exports are tested
+              for motion blur, noise, and banding.
+            </li>
+            <li>
+              <strong>More reliable lab data</strong> – verifies presence of key segments/fields,
+              units and structure in HL7/FHIR and lab reports.
+            </li>
+          </ul>
+          <p>
+            By blocking or warning on low-quality input, Preflight raises the average quality of
+            data going into your OCR and AI stack, which directly improves the reliability
+            of the final results.
+          </p>
+        </div>
+
+        <div class="pf-panel">
+          <h3>“No Garbage In → No Garbage Out”</h3>
+          <ul>
+            <li>
+              <strong>Hard gate:</strong> very low scores can disable the upload button completely.
+            </li>
+            <li>
+              <strong>Soft gate:</strong> borderline files can still be uploaded but are tagged
+              with a quality score for downstream logic and analytics.
+            </li>
+            <li>
+              <strong>User coaching:</strong> every score comes with specific tips so users learn
+              what “good data” looks like and improve their next upload.
+            </li>
+          </ul>
+          <p>
+            Over time, this feedback loop dramatically reduces bad uploads and builds trust in the
+            platform’s output.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script type="module" src="./core/shell.js"></script>
+
+  <script>
+    /** * WATCHER SCRIPT
+     * This observes the 'files' container. When your main script adds a result card,
+     * this script immediately adds a close button and ensures the upload button is hidden.
+     */
+    const filesContainer = document.getElementById('files');
+
+    const observer = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        // If nodes were added
+        if (mutation.addedNodes.length) {
+          mutation.addedNodes.forEach((node) => {
+            // Check if the added node is an element (div)
+            if (node.nodeType === 1) {
+              
+              // 1. Create the Close Button
+              const closeBtn = document.createElement('div');
+              closeBtn.innerHTML = '&times;'; // The "X" symbol
+              closeBtn.className = 'close-card-btn';
+              closeBtn.title = 'Remove this file';
+              
+              // 2. Add Click Event to Remove the Card
+              closeBtn.onclick = function() {
+                node.remove();
+              };
+
+              // 3. Append Close Button to the Result Card
+              node.appendChild(closeBtn);
+            }
+          });
+        }
+      });
+    });
+
+    // Start watching the #files div for changes
+    if (filesContainer) {
+      observer.observe(filesContainer, { childList: true });
+    }
+  </script>
+</body>
+</html>
