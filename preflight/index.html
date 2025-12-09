@@ -1,106 +1,267 @@
 <!doctype html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8" />
-  <title>Preflight Universal (Docs + Images + Labs)</title>
+  <title>Preflight Universal (Intelligent Validation)</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
     :root {
-      --bg:#0b0d10;
-      --panel:#12161c;
-      --text:#e7eef7;
-      --muted:#9fb0c2;
-      --ok:#29d17d;
-      --warn:#ffb020;
-      --bad:#ff5c5c;
-      --border:#1f2734;
+      --bg: #0b0d10;
+      --panel: #12161c;
+      --text: #e7eef7;
+      --muted: #9fb0c2;
+      --ok: #29d17d;
+      --warn: #ffb020;
+      --bad: #ff5c5c;
+      --border: #1f2734;
     }
-    * { box-sizing:border-box; }
+
+    * {
+      box-sizing: border-box;
+    }
+
     body {
-      margin:0;
-      background:linear-gradient(180deg,#0b0d10,#0e1319);
-      font-family:system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
-      color:var(--text);
+      margin: 0;
+      background: linear-gradient(180deg, #0b0d10, #0e1319);
+      font-family: system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+      color: var(--text);
     }
+
+    /* ===== About / Explanation Section ===== */
+    .preflight-about {
+      max-width: 1100px;
+      margin: 40px auto;
+      padding: 0 20px;
+      font-family: inherit;
+    }
+
+    .pf-card {
+      background: #10151d;
+      border-radius: 16px;
+      border: 1px solid #1f2734;
+      padding: 32px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, .3);
+    }
+
+    .preflight-about h2 {
+      margin: 0 0 8px;
+      font-size: 20px;
+      font-weight: 700;
+      color: #e7eef7;
+    }
+
+    /* Intro text styling */
+    .pf-intro {
+      color: #9fb0c2;
+      margin-bottom: 24px;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .pf-intro strong {
+      color: #fff;
+    }
+
+    .pf-intro em {
+      color: #ffb020;
+      font-style: normal;
+    }
+
+    .pf-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .pf-panel {
+      background: #0b0d10;
+      border: 1px solid #1f2734;
+      border-radius: 12px;
+      padding: 20px;
+    }
+
+    .pf-panel h3 {
+      margin: 0 0 12px;
+      font-size: 15px;
+      font-weight: 700;
+      color: #e7eef7;
+    }
+
+    .pf-panel ul,
+    .pf-panel ol {
+      margin: 0;
+      padding-left: 20px;
+      color: #9fb0c2;
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    .pf-panel li {
+      margin-bottom: 8px;
+    }
+
+    .pf-panel p {
+      margin: 12px 0 0;
+      color: #9fb0c2;
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    .pf-panel code {
+      background: #1c2430;
+      border: 1px solid #2a3343;
+      border-radius: 4px;
+      padding: 2px 6px;
+      font-family: monospace;
+      color: #a7bdd7;
+      font-size: 12px;
+    }
+
+    .pf-panel strong {
+      color: #d0dceb;
+    }
+
+    @media (max-width:900px) {
+      .pf-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
     .wrap {
-      max-width:1100px;
-      margin:32px auto;
-      padding:20px;
+      max-width: 1100px;
+      margin: 32px auto;
+      padding: 20px;
     }
+
     .card {
-      background:var(--panel);
-      border:1px solid #1e2430;
-      border-radius:16px;
-      padding:20px;
-      box-shadow:0 10px 30px rgba(0,0,0,.25);
+      background: var(--panel);
+      border: 1px solid #1e2430;
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, .25);
     }
+
     h1 {
-      margin:0 0 10px;
-      font-weight:700;
-      font-size:24px;
+      margin: 0 0 10px;
+      font-weight: 700;
+      font-size: 24px;
     }
+
     pre {
-        font-size: 6px; 
-        white-space: pre;
-        margin-left: -25px;
-      }
-      .medical-big-inline{
-        margin-top: 0.75rem;
-        text-align: center;
-        font-size: 15px;   
-        letter-spacing: 0.4em;
-        font-weight: bold;
-      }
+      font-size: 6px;
+      white-space: pre;
+      margin-left: -25px;
+      color: var(--ok);
+    }
+
+    .medical-big-inline {
+      margin-top: 0.75rem;
+      text-align: center;
+      font-size: 15px;
+      letter-spacing: 0.4em;
+      font-weight: bold;
+      color: var(--text);
+    }
+
     p {
-      color:var(--muted);
-      margin:8px 0 14px;
+      color: var(--muted);
+      margin: 8px 0 14px;
     }
+
     .row {
-      display:flex;
-      gap:12px;
-      flex-wrap:wrap;
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
     }
+
     .drop {
-      flex:1;
-      border:2px dashed #2a3343;
-      border-radius:14px;
-      padding:24px;
-      text-align:center;
-      cursor:pointer;
-      background:#0f141b;
-      min-width:280px;
+      flex: 1;
+      border: 2px dashed #2a3343;
+      border-radius: 14px;
+      padding: 40px;
+      text-align: center;
+      cursor: pointer;
+      background: #0f141b;
+      min-width: 280px;
+      transition: border-color 0.2s;
     }
-    .drop:hover { border-color:#3b4860; }
+
+    .drop:hover {
+      border-color: #3b4860;
+    }
+
+    .drop.drag-over {
+      border-color: var(--ok) !important;
+      background: #161b22;
+    }
+
     .pill {
-      display:inline-block;
-      padding:2px 8px;
-      border-radius:999px;
-      font-size:12px;
-      margin-right:6px;
-      border:1px solid #263246;
-      color:#a7bdd7;
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-size: 12px;
+      margin-right: 6px;
+      border: 1px solid #263246;
+      color: #a7bdd7;
     }
-    
-    /* --- MODIFIED RESULT STYLES --- */
+
+    /* Result Card Styles */
     .result {
-      margin-top:14px;
-      padding:14px;
-      border-radius:12px;
-      background:#0f141b;
-      border:1px solid #1f2732;
-      position: relative; /* Required for the close button positioning */
+      margin-top: 14px;
+      padding: 16px;
+      border-radius: 12px;
+      background: #0f141b;
+      border: 1px solid #1f2732;
+      position: relative;
+      animation: fadeIn 0.3s ease-out;
     }
-    
-    /* New Close Button Style */
+
+    .result .btn {
+      background: var(--ok);
+      border: none;
+      border-radius: 6px;
+      padding: 6px 12px;
+      color: #0b0d10;
+      font-weight: 700;
+      font-size: 12px;
+      cursor: pointer;
+      opacity: 0.5;
+      pointer-events: none;
+      transition: all 0.2s;
+    }
+
+    .result .btn:not([disabled]) {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .result .btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(41, 209, 125, 0.3);
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(5px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
     .close-card-btn {
       position: absolute;
       top: 10px;
       right: 10px;
       width: 24px;
       height: 24px;
-      background: transparent;
       color: var(--muted);
       border: 1px solid var(--border);
+      background: #161b22;
       border-radius: 50%;
       text-align: center;
       line-height: 22px;
@@ -109,200 +270,182 @@
       transition: all 0.2s;
       z-index: 10;
     }
+
     .close-card-btn:hover {
       background: var(--bad);
       color: white;
       border-color: var(--bad);
     }
 
-    /* Hide the Upload Button inside results */
-    .result .btn {
-      display: none !important; 
+    .score {
+      font-weight: 700;
     }
-    /* ------------------------------ */
 
-    .score { font-weight:700; }
-    .good { color:var(--ok); }
-    .warn { color:var(--warn); }
-    .bad { color:var(--bad); }
+    .good {
+      color: var(--ok);
+    }
+
+    .warn {
+      color: var(--warn);
+    }
+
+    .bad {
+      color: var(--bad);
+    }
+
     .tips {
-      margin-top:8px;
-      color:#bcd0e6;
-      font-size:13px;
-    }
-    .btn {
-      background:#17202b;
-      border:1px solid #2a3343;
-      border-radius:10px;
-      color:#d7e6fb;
-      padding:10px 14px;
-      cursor:pointer;
-      font-size:13px;
-    }
-    .btn[disabled] {
-      opacity:.5;
-      cursor:not-allowed;
-    }
-    .btn:hover:not([disabled]) {
-      border-color:#3b4860;
-    }
-    .config {
-      margin-top:12px;
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:12px;
-    }
-    @media (max-width:1100px) {
-      .config { grid-template-columns:1fr; }
-    }
-    .k {
-      font-weight:600;
-      color:#cfe0f7;
-      font-size:13px;
-      margin-bottom:4px;
-    }
-    input[type="text"], input[type="url"] {
-      width:100%;
-      padding:6px 8px;
-      border-radius:8px;
-      border:1px solid #222b3a;
-      background:#0c1117;
-      color:#e2ecff;
-      font-size:13px;
-    }
-    .panel {
-      background:#0f141b;
-      border:1px solid #1f2732;
-      border-radius:12px;
-      padding:12px;
-    }
-    .mono {
-      font-family:ui-monospace,Menlo,Consolas,monospace;
-      white-space:pre-wrap;
-      word-break:break-word;
-      font-size:12px;
-      color:#cfe0f7;
-    }
-    .progress {
-      font-size:13px;
-      color:#9fb0c2;
-      margin-top:6px;
-    }
-    .grid {
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:12px;
-      margin-top:12px;
-    }
-    @media (max-width:1100px) {
-      .grid { grid-template-columns:1fr; }
+      margin-top: 8px;
+      color: #bcd0e6;
+      font-size: 13px;
+      line-height: 1.4;
     }
 
-    /* ===== About / Explanation Section ===== */
-    .preflight-about {
-      max-width:1100px;
-      margin:24px auto 40px;
-      padding:0 20px 10px;
-      font-family:inherit;
+    /* CUSTOM MODAL */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      z-index: 2000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      backdrop-filter: blur(4px);
     }
-    .preflight-about .pf-card {
-      background:var(--panel, #10151d);
-      border-radius:16px;
-      border:1px solid var(--border);
-      padding:20px 20px 24px;
-      box-shadow:0 10px 30px rgba(0,0,0,.3);
+
+    .modal-overlay.active {
+      display: flex;
     }
-    .preflight-about h2 {
-      margin:0 0 10px;
-      font-size:22px;
-      font-weight:700;
-      color:var(--text);
+
+    .modal-box {
+      background: #161b22;
+      border: 1px solid #2a3343;
+      border-radius: 16px;
+      padding: 40px 30px;
+      text-align: center;
+      position: relative;
+      max-width: 400px;
+      width: 90%;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+      animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
-    .preflight-about h3 {
-      margin:0 0 8px;
-      font-size:16px;
-      font-weight:600;
-      color:#d2e0f5;
+
+    .modal-close {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: #0f141b;
+      border: 1px solid #2a3343;
+      color: #9fb0c2;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
     }
-    .preflight-about p {
-      margin:6px 0 10px;
-      font-size:14px;
-      color:var(--muted);
+
+    .modal-close:hover {
+      background: #ff5c5c;
+      color: white;
+      border-color: #ff5c5c;
     }
-    .preflight-about ul,
-    .preflight-about ol {
-      margin:6px 0 10px 18px;
-      padding:0;
-      font-size:13px;
-      color:#b5c4d7;
+
+    @keyframes popIn {
+      from {
+        transform: scale(0.9);
+        opacity: 0;
+      }
+
+      to {
+        transform: scale(1);
+        opacity: 1;
+      }
     }
-    .preflight-about li { margin-bottom:4px; }
-    .preflight-about code {
-      background:#0c1117;
-      border-radius:6px;
-      padding:1px 5px;
-      font-size:12px;
-      border:1px solid #202838;
-      color:#e3ecff;
+
+    /* Config / Panels */
+    .config {
+      margin-top: 12px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
     }
-    .preflight-about strong { color:#dde8ff; }
-    .preflight-about em {
-      color:#ffdf91;
-      font-style:normal;
+
+    .panel {
+      background: #0f141b;
+      border: 1px solid #1f2732;
+      border-radius: 12px;
+      padding: 12px;
     }
-    .preflight-about .pf-grid {
-      margin-top:14px;
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:12px;
+
+    .k {
+      font-weight: 600;
+      color: #cfe0f7;
+      font-size: 13px;
+      margin-bottom: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
     }
-    .preflight-about .pf-panel {
-      background:#0f141b;
-      border-radius:12px;
-      border:1px solid #1d2532;
-      padding:10px 12px 12px;
+
+    /* Mascot Placeholder */
+    #mascot-placeholder {
+      margin-top: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      animation: float 3s ease-in-out infinite;
     }
-    @media (max-width:900px) {
-      .preflight-about .pf-grid { grid-template-columns:1fr; }
+
+    #mascot-placeholder img {
+      height: 100px;
+      width: auto;
+      filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.3));
+    }
+
+    @keyframes float {
+      0% {
+        transform: translateY(0px);
+      }
+
+      50% {
+        transform: translateY(-5px);
+      }
+
+      100% {
+        transform: translateY(0px);
+      }
+    }
+
+    .medical-credit {
+      margin-top: 0.25rem;
+      text-align: center;
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      font-weight: 600;
+      color: var(--muted);
+      display: block;
+      /* Ensure they break lines properly inside pre/parent if needed, though originally spans */
     }
   </style>
 
+  <!-- PDF.js -->
   <script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js"></script>
   <script>
-    pdfjsLib.GlobalWorkerOptions.workerSrc =
-      "https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js";
+    pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js";
   </script>
 
-  <script>
-    (function loadXLSX(){
-      const sources = [
-        "./vendor/xlsx.full.min.js",
-        "https://fastly.jsdelivr.net/npm/xlsx@0.20.2/dist/xlsx.full.min.js",
-        "https://cdn.statically.io/gh/SheetJS/sheetjs/v0.20.2/dist/xlsx.full.min.js",
-        "https://cdn.sheetjs.com/xlsx-0.20.2/package/dist/xlsx.full.min.js"
-      ];
-      let i = 0;
-      function next(){
-        if (window.XLSX && typeof XLSX.read === "function") {
-          return;
-        }
-        if (i >= sources.length) {
-          window.__xlsxFailed = true;
-          return;
-        }
-        const s = document.createElement("script");
-        s.src = sources[i++];
-        s.async = true;
-        s.onerror = () => { next(); };
-        document.head.appendChild(s);
-      }
-      next();
-    })();
-  </script>
+  <!-- SheetJS (XLSX) -->
+  <script src="https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js"></script>
 
-  <script src="https://cdn.jsdelivr.net/npm/mammoth@1.8.0/mammoth.browser.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5.1.1/dist/tesseract.min.js"></script>
+  <!-- Tesseract.js (v5) -->
+  <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+
 </head>
+
 <body>
   <div class="wrap">
     <div class="card">
@@ -315,12 +458,10 @@
         ##        ##   ##   ##        ##        ##          ##      ##   ##   ##   ##     ##        
         ##        ##    ##  #######   ##        #######   #####      ######   ##   ##     ##
         <span class="medical-big-inline">Universal</span> 
-        <span class="medical-big-inline">Designed & Developed</span>   
-        <span class="medical-big-inline">By Debayan Chakravarty</span>                            
       </pre>
-      <p>
-        Check the quality of documents, images, medical scans, and lab reports
-        <strong>before</strong> they hit OCR / AI and storage.
+
+      <p style="text-align:center; font-size: 16px;">
+        Drag & Drop your files below for <strong style="color:var(--ok)">Intelligent Pre-Flight Validation</strong>.
       </p>
 
       <div class="config">
@@ -332,27 +473,36 @@
         </div>
       </div>
 
-      <div class="row" style="margin-top:14px">
+      <div class="row" style="margin-top:20px">
         <div id="drop" class="drop">
+          <!-- Hidden Input -->
           <input id="file" type="file" multiple style="display:none" />
-          <p>👉 <b>Click to choose files</b> or drag &amp; drop here</p>
-          <div class="pill">PDF</div>
-          <div class="pill">JPG/PNG</div>
-          <div class="pill">CSV</div>
-          <div class="pill">XLSX</div>
-          <div class="pill">DOCX</div>
-          <div class="pill">DICOM (.dcm)</div>
+
+          <div style="font-size: 24px; margin-bottom: 10px;">☁️</div>
+          <p style="margin:0; font-size:15px; color:#e7eef7;"><b>Drop files here</b> to validate</p>
+          <div style="margin-top:10px; display:flex; gap:6px; justify-content:center; flex-wrap:wrap;">
+            <div class="pill">PDF</div>
+            <div class="pill">JPG/PNG</div>
+            <div class="pill">CSV</div>
+            <div class="pill">XLSX</div>
+            <div class="pill">DOCX</div>
+            <div class="pill">DICOM (.dcm)</div>
+          </div>
         </div>
       </div>
 
       <div id="files"></div>
+
+      <div id="mascot-placeholder">
+        <img src="./assets/mascot.png" alt="Preflight Mascot" />
+      </div>
     </div>
   </div>
 
   <section class="preflight-about">
     <div class="pf-card">
       <h2>Why Preflight Exists</h2>
-      <p>
+      <p class="pf-intro">
         Preflight is the gatekeeper between <strong>raw uploads</strong> and your
         <strong>OCR / AI engine</strong>. Its goal is simple:
         <em>no garbage in, so there is no garbage out</em>.
@@ -453,46 +603,38 @@
     </div>
   </section>
 
+  <section class="preflight-about" style="margin-top:20px;">
+    <div class="pf-card" style="text-align:center;">
+      <h2>High Level Architecture</h2>
+      <p class="pf-intro" style="margin-bottom:20px">
+        See how Preflight validates data on the <strong>Edge / Browser</strong> before it ever touches your cloud.
+      </p>
+      <img src="./assets/arc.png" alt="High Level Architecture"
+        style="max-width:100%; height:auto; border-radius:8px; border:1px solid #1f2734; box-shadow:0 5px 20px rgba(0,0,0,0.5);">
+    </div>
+  </section>
+
+  <footer
+    style="max-width:1100px; margin:40px auto 60px; padding:0 20px 20px; color:#5c6b7f; font-size:12px; display:flex; align-items:center; gap:10px;">
+    <span>Designed & Developed By <strong>Debayan Chakravarty</strong></span>
+    <span style="opacity:0.3">|</span>
+    <code style="background:#13171d; padding:2px 6px; border-radius:4px; font-size:11px; color:#8b9bb4;">v0.0.8</code>
+  </footer>
+
+  <!-- API Modal -->
+  <div id="api-modal" class="modal-overlay">
+    <div class="modal-box">
+      <div class="modal-close" onclick="document.getElementById('api-modal').classList.remove('active')">&times;</div>
+      <div style="font-size:40px; margin-bottom:16px;">😃</div>
+      <h3 style="color:#e7eef7; margin:0 0 10px; font-size:18px;">Almost there!</h3>
+      <p style="color:#9fb0c2; font-size:14px; line-height:1.5; margin:0;">
+        Add your APIs end point to go next
+      </p>
+    </div>
+  </div>
+
+  <!-- Core Logic -->
   <script type="module" src="./core/shell.js"></script>
-
-  <script>
-    /** * WATCHER SCRIPT
-     * This observes the 'files' container. When your main script adds a result card,
-     * this script immediately adds a close button and ensures the upload button is hidden.
-     */
-    const filesContainer = document.getElementById('files');
-
-    const observer = new MutationObserver((mutations) => {
-      mutations.forEach((mutation) => {
-        // If nodes were added
-        if (mutation.addedNodes.length) {
-          mutation.addedNodes.forEach((node) => {
-            // Check if the added node is an element (div)
-            if (node.nodeType === 1) {
-              
-              // 1. Create the Close Button
-              const closeBtn = document.createElement('div');
-              closeBtn.innerHTML = '&times;'; // The "X" symbol
-              closeBtn.className = 'close-card-btn';
-              closeBtn.title = 'Remove this file';
-              
-              // 2. Add Click Event to Remove the Card
-              closeBtn.onclick = function() {
-                node.remove();
-              };
-
-              // 3. Append Close Button to the Result Card
-              node.appendChild(closeBtn);
-            }
-          });
-        }
-      });
-    });
-
-    // Start watching the #files div for changes
-    if (filesContainer) {
-      observer.observe(filesContainer, { childList: true });
-    }
-  </script>
 </body>
+
 </html>
