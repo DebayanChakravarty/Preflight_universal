@@ -284,3 +284,31 @@ function renderResult(statusEl, detailsEl, result, btnEl) {
 
   statusEl.innerHTML = `<span class="score ${colorClass}">Score: ${result.score}/100</span> — <span class="${colorClass}">${result.msg}</span> ${tagHtml}`;
 }
+
+/* -------------------------------------------------------------------------- */
+/*                               INIT / EXTRAS                                */
+/* -------------------------------------------------------------------------- */
+
+// Fetch View Count
+async function updateViewCount() {
+  const el = document.getElementById('view-counter');
+  const valEl = document.getElementById('view-count-val');
+  if (!el || !valEl) return;
+
+  try {
+    // Determine path relative to current page
+    const res = await fetch('../views.php');
+    if (res.ok) {
+      const data = await res.json();
+      if (data.ok) {
+        valEl.innerText = data.count;
+        el.style.opacity = '1';
+      }
+    }
+  } catch (e) {
+    console.warn("View counting failed (likely strictly static host or fetch blocked)", e);
+  }
+}
+
+// Run on Load
+updateViewCount();

@@ -1,0 +1,5 @@
+
+# Data storage for viewer count
+data/
+*.csv
+views.php
